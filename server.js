@@ -1,12 +1,6 @@
 const express = require('express');
-const fs = require('fs')
 const helmet = require("helmet");
-const https = require('https')
-var sslOptions = {
-key: fs.readFileSync('key.pem'),
-cert: fs.readFileSync('cert.pem'),
-passphrase: 'vbnm'
-};
+const http = require('http'); // Use 'http' instead of 'https'
 
 var app = express();
 app.use(helmet({
@@ -38,31 +32,39 @@ const port = 3000;
 const base = `${__dirname}/public`;
 app.use(express.static('public'));
 
-var server = https.createServer(sslOptions, app).listen(port, function(){
+// Use 'http.createServer' instead of 'https.createServer'
+const server = http.createServer(app).listen(port, function() {
   console.log("Express server listening on port " + port);
-  });
-  app.get('/', function (req, res) {
-    res.sendFile(`${base}/welcome.html`);
-  });
-  app.get('/a_d', function (req, res) {
-    res.sendFile(`${base}/a_d.html`);
-  });
-  app.get('/m_dev', function (req, res) {
-    res.sendFile(`${base}/m_dev.html`);
-  });
-  app.get('/light_Set', function (req, res) {
-    res.sendFile(`${base}/light_Set.html`);
-  });
-  app.get('/rem_Dev', function (req, res) {
-    res.sendFile(`${base}/rem_Dev.html`);
-  });
-  app.get('/lighting', function (req, res) {
-    res.sendFile(`${base}/lighting.html`);
-  });
-  app.get('/ac', function (req, res) {
-    res.sendFile(`${base}/ac.html`);
-  });
-  app.get('/security', function (req, res) {
-    res.sendFile(`${base}/security.html`);
-  });
+});
 
+app.get('/', function (req, res) {
+  res.sendFile(`${base}/welcome.html`);
+});
+
+app.get('/a_d', function (req, res) {
+  res.sendFile(`${base}/a_d.html`);
+});
+
+app.get('/m_dev', function (req, res) {
+  res.sendFile(`${base}/m_dev.html`);
+});
+
+app.get('/light_Set', function (req, res) {
+  res.sendFile(`${base}/light_Set.html`);
+});
+
+app.get('/rem_Dev', function (req, res) {
+  res.sendFile(`${base}/rem_Dev.html`);
+});
+
+app.get('/lighting', function (req, res) {
+  res.sendFile(`${base}/lighting.html`);
+});
+
+app.get('/ac', function (req, res) {
+  res.sendFile(`${base}/ac.html`);
+});
+
+app.get('/security', function (req, res) {
+  res.sendFile(`${base}/security.html`);
+});
