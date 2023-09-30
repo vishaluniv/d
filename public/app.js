@@ -2,16 +2,20 @@ const API_URL = 'https://localhost:5000/api';
 const MQTT_URL = 'https://localhost:5001/mqtt';
 
 
-$('#add_devs_floor').on('change', function() {  
+console.log('Before change event');
+
+$('#new_device_floor').on('change', function() {
+  console.log('Inside change event');
+  
   var floor = $(this).val();
-  var rooms = $('#add_devs_room');
+  var rooms = $('#new_device_room');
 
   rooms.empty();
 
   console.log('Selected floor:', floor);
 
   $.ajax({
-    url: `${API_URL}/getRooms?floor=${floor}`,
+    url: `${API_URL}/rooms?floor=${floor}`,
     type: 'GET',
     success: function(data) {
       console.log('Retrieved rooms:', data);
@@ -23,6 +27,7 @@ $('#add_devs_floor').on('change', function() {
         }));
       });
 
+      console.log('Populated rooms:', rooms);
     },
     error: function(xhr, status, error) {
       console.log('Error:', error);
@@ -30,12 +35,11 @@ $('#add_devs_floor').on('change', function() {
   });
 });
 
-
-$('#remo_floor_now').on('change', function() {
+$('#remove_floor').on('change', function() {
   console.log('Inside change event');
   
   var floor = $(this).val();
-  var rooms = $('#remo_room');
+  var rooms = $('#remove_room');
 
   rooms.empty();
   rooms.append($('<option>', {value:"", text: "--Select--"}));
@@ -43,7 +47,7 @@ $('#remo_floor_now').on('change', function() {
   console.log('Selected floor:', floor);
 
   $.ajax({
-    url: `${API_URL}/getRooms?floor=${floor}`,
+    url: `${API_URL}/rooms?floor=${floor}`,
     type: 'GET',
     success: function(data) {
       console.log('Retrieved rooms:', data);
@@ -64,11 +68,11 @@ $('#remo_floor_now').on('change', function() {
 });
 
 
-$('#ds_1_f').on('change', function() {
+$('#d_1_floor').on('change', function() {
   console.log('Inside change event');
   
   var floor = $(this).val();
-  var rooms = $('#dev_1_r');
+  var rooms = $('#d_1_room');
 
   rooms.empty();
   rooms.append($('<option>', {value:"", text: "--Select--"}));
@@ -76,7 +80,7 @@ $('#ds_1_f').on('change', function() {
   console.log('Selected floor:', floor);
 
   $.ajax({
-    url: `${API_URL}/getRooms?floor=${floor}`,
+    url: `${API_URL}/rooms?floor=${floor}`,
     type: 'GET',
     success: function(data) {
       console.log('Retrieved rooms:', data);
@@ -98,11 +102,13 @@ $('#ds_1_f').on('change', function() {
 
 
 
-$('#ds_2_f').on('change', function() {
+
+
+$('#d_2_floor').on('change', function() {
   console.log('Inside change event');
   
   var floor = $(this).val();
-  var rooms = $('#ds_2_r');
+  var rooms = $('#d_2_room');
 
   rooms.empty();
   rooms.append($('<option>', {value:"", text: "--Select--"}));
@@ -110,7 +116,39 @@ $('#ds_2_f').on('change', function() {
   console.log('Selected floor:', floor);
 
   $.ajax({
-    url: `${API_URL}/getRooms?floor=${floor}`,
+    url: `${API_URL}/rooms?floor=${floor}`,
+    type: 'GET',
+    success: function(data) {
+      console.log('Retrieved rooms:', data);
+
+      data.forEach(function(roomNumber) {
+        rooms.append($('<option>', {
+          value: roomNumber,
+          text: roomNumber
+        }));
+      });
+
+      console.log('Populated rooms:', rooms);
+    },
+    error: function(xhr, status, error) {
+      console.log('Error:', error);
+    }
+  });
+});
+
+$('#d_3_floor').on('change', function() {
+  console.log('Inside change event');
+  
+  var floor = $(this).val();
+  var rooms = $('#d_3_room');
+
+  rooms.empty();
+  rooms.append($('<option>', {value:"", text: "--Select--"}));
+
+  console.log('Selected floor:', floor);
+
+  $.ajax({
+    url: `${API_URL}/rooms?floor=${floor}`,
     type: 'GET',
     success: function(data) {
       console.log('Retrieved rooms:', data);
@@ -131,52 +169,19 @@ $('#ds_2_f').on('change', function() {
 });
 
 
-$('#ds_3_f').on('change', function() {
-  console.log('Inside change event');
-  
-  var floor = $(this).val();
-  var rooms = $('#ds_3_r');
-
-  rooms.empty();
-  rooms.append($('<option>', {value:"", text: "--Select--"}));
-
-  console.log('Selected floor:', floor);
-
-  $.ajax({
-    url: `${API_URL}/getRooms?floor=${floor}`,
-    type: 'GET',
-    success: function(data) {
-      console.log('Retrieved rooms:', data);
-
-      data.forEach(function(roomNumber) {
-        rooms.append($('<option>', {
-          value: roomNumber,
-          text: roomNumber
-        }));
-      });
-
-      console.log('Populated rooms:', rooms);
-    },
-    error: function(xhr, status, error) {
-      console.log('Error:', error);
-    }
-  });
-});
-
-
-$('#dev_1_r').on('change',function() {
-  if ($('#dev_1_r') != undefined && $('#loor') != undefined && ('#ds_1_type') != undefined) {
-    const devices = $('#ds_1_device');
+$('#d_1_room').on('change',function() {
+  if ($('#d_1_room') != undefined && $('#d_1_floor') != undefined && ('#d_1_type') != undefined) {
+    const devices = $('#d_1_device');
     console.log("yes, I am here");
     devices.empty();
     
-    const floor = $('#ds_1_floor').val();
-    const room = $('#dev_1_r').val();
-    const type = $('#ds_1_type').val();
+    const floor = $('#d_1_floor').val();
+    const room = $('#d_1_room').val();
+    const type = $('#d_1_type').val();
     console.log(floor, room, type);
 
     $.ajax({
-      url: `${API_URL}/getDevs?floor=${floor}&type=${type}&room=${room}`,
+      url: `${API_URL}/remove?floor=${floor}&type=${type}&room=${room}`,
       type: 'GET',
       success: function(data) {
         console.log('Retrieved devices:', data);  
@@ -199,19 +204,19 @@ $('#dev_1_r').on('change',function() {
 
 
 
-$('#ds_2_r').on('change',function() {
-  if ($('#ds_2_r') != undefined && $('#ds_2_f') != undefined && ('#ds_2_t') != undefined) {
-    const devices = $('#ds_2_device');
+$('#d_2_room').on('change',function() {
+  if ($('#d_2_room') != undefined && $('#d_2_floor') != undefined && ('#d_2_type') != undefined) {
+    const devices = $('#d_2_device');
     console.log("yes, I am here");
     devices.empty();
     
-    const floor = $('#ds_2_f').val();
-    const room = $('#ds_2_r').val();
-    const type = $('#ds_2_t').val();
+    const floor = $('#d_2_floor').val();
+    const room = $('#d_2_room').val();
+    const type = $('#d_2_type').val();
     console.log(floor, room, type);
 
     $.ajax({
-      url: `${API_URL}/getDevs?floor=${floor}&type=${type}&room=${room}`,
+      url: `${API_URL}/remove?floor=${floor}&type=${type}&room=${room}`,
       type: 'GET',
       success: function(data) {
         console.log('Retrieved devices:', data);  
@@ -232,19 +237,19 @@ $('#ds_2_r').on('change',function() {
 
 });
 
-$('#ds_3_r').on('change',function() {
-  if ($('#ds_3_r') != undefined && $('#ds_3_f') != undefined && ('#ds_3_t') != undefined) {
-    const devices = $('#ds_3_device');
+$('#d_3_room').on('change',function() {
+  if ($('#d_3_room') != undefined && $('#d_3_floor') != undefined && ('#d_3_type') != undefined) {
+    const devices = $('#d_3_device');
     console.log("yes, I am here");
     devices.empty();
     
-    const floor = $('#ds_3_f').val();
-    const room = $('#ds_3_r').val();
-    const type = $('#ds_3_t').val();
+    const floor = $('#d_3_floor').val();
+    const room = $('#d_3_room').val();
+    const type = $('#d_3_type').val();
     console.log(floor, room, type);
 
     $.ajax({
-      url: `${API_URL}/getDevs?floor=${floor}&type=${type}&room=${room}`,
+      url: `${API_URL}/remove?floor=${floor}&type=${type}&room=${room}`,
       type: 'GET',
       success: function(data) {
         console.log('Retrieved devices:', data);  
@@ -265,11 +270,11 @@ $('#ds_3_r').on('change',function() {
 
 });
 
-$('#dev_dev_floor').on('change', function() {
+$('#d_data_floor').on('change', function() {
   console.log('Inside change event');
   
   var floor = $(this).val();
-  var rooms = $('#dev_dev_r');
+  var rooms = $('#d_data_room');
 
   rooms.empty();
   rooms.append($('<option>', {value:"", text: "--Select--"}));
@@ -277,7 +282,7 @@ $('#dev_dev_floor').on('change', function() {
   console.log('Selected floor:', floor);
 
   $.ajax({
-    url: `${API_URL}/getRooms?floor=${floor}`,
+    url: `${API_URL}/rooms?floor=${floor}`,
     type: 'GET',
     success: function(data) {
       console.log('Retrieved rooms:', data);
@@ -298,24 +303,24 @@ $('#dev_dev_floor').on('change', function() {
 });
 
 
-$('#dev_dev_btn').on('click', function() {
-  var floor = $('#dev_dev_floor').val();
-  var room = $('#dev_dev_r').val();
-  var type = $('#dev_dev_ty').val();
-  var name = $('#dev_dev_device').val();
-  if ($('#dev_dev_r') != undefined && $('#dev_dev_floor') != undefined && ('#dev_dev_ty') != undefined && ('#dev_dev_device') != undefined) {
+$('#d_data_button').on('click', function() {
+  var floor = $('#d_data_floor').val();
+  var room = $('#d_data_room').val();
+  var type = $('#d_data_type').val();
+  var name = $('#d_data_device').val();
+  if ($('#d_data_room') != undefined && $('#d_data_floor') != undefined && ('#d_data_type') != undefined && ('#d_data_device') != undefined) {
     $.ajax({
     url: `${API_URL}/th?floor=${floor}&room=${room}&name=${name}`,
     method: 'GET',
     success: (data) => {
-      $('#data_container').empty();
-      $('#data_container').append(`<h2 style="color: #ffffff;">Device Data</h2><label style="color: #ffffff;">Name: ${name}</label><br><label style="color: #ffffff;">Type: ${type}</label><br><label style="color: #ffffff;">Floor: ${floor}</label><br><label style="color: #ffffff;">Room: ${room}</label><br><label style="color: #ffffff;">Temperature Data: ${data.temp }</label><br><br><label style="color: #ffffff;">Humidity Data: ${data.humid }</label><br>`);
+      $('#dataContainer').empty();
+      $('#dataContainer').append(`<h2>Device Data</h2><label>Name: ${name}</label><br><label>Type: ${type}</label><br><label>Floor: ${floor}</label><br><label>Room: ${room}</label><br><label>Gas Data: ${data.gas}</label><br><br><label>Humidity Data: ${data.humid}</label><br>`);
       var chartOptions = {
         chart: {
           type: 'line'
         },
         title: {
-          text: 'Air Condition'
+          text: 'Device Data'
         },
         xAxis: {
           categories: 'DEVICE'
@@ -326,30 +331,34 @@ $('#dev_dev_btn').on('click', function() {
           }
         },
         series: [{
-          name: 'Temperature',
-          data: data.temp
-        },
-        {
           name: 'Humidity',
           data: data.humid
-        }]
+        },
+        {
+          name: 'Gas',
+          data: data.gas
+        }
+      ]
       };
       $(document).ready(function() {      $('#graph').highcharts(chartOptions);
     });
     },
     error: (err) => {
-      console.log('Error:', err);
+      console.log('Error retrieving headings:', err);
     }
   });
   }
+
+  
 });
 
 
-$('#add_d').on('click', function(){
-    var name = $('#add_devs_name').val();
-    var floor = $('#add_devs_floor').val();
-    var room = $('#add_devs_room').val();
-    var type = $('#add_devs_type').val();
+$('#add_device_button').on('click', function(){
+    var name = $('#new_device_name').val();
+    var floor = $('#new_device_floor').val();
+    var room = $('#new_device_room').val();
+    var type = $('#new_device_type').val();
+    console.log("yep, yep");
     console.log(name);
     console.log(room);
     console.log(floor);
@@ -373,7 +382,7 @@ $('#add_d').on('click', function(){
     }
     else if(type == '2'){
         $.ajax({
-            url: `${API_URL}/ac`,
+            url: `${API_URL}/aircond`,
             type: "POST",
             data: {
               name: name, 
@@ -409,18 +418,19 @@ $('#add_d').on('click', function(){
     $('#new_device_floor').val("");
 });
 
-$('#dev_dev_r').on('change',function() {
-  if ($('#dev_dev_r') != undefined && $('#dev_dev_floor') != undefined && ('#dev_dev_ty') != undefined) {
-    const devices = $('#dev_dev_device');
+$('#d_data_room').on('change',function() {
+  if ($('#d_data_room') != undefined && $('#d_data_floor') != undefined && ('#d_data_type') != undefined) {
+    const devices = $('#d_data_device');
+    console.log("yes, I am here");
     devices.empty();
     
-    const floor = $('#dev_dev_floor').val();
-    const room = $('#dev_dev_r').val();
-    const type = $('#dev_dev_ty').val();
+    const floor = $('#d_data_floor').val();
+    const room = $('#d_data_room').val();
+    const type = $('#d_data_type').val();
     console.log(floor, room, type);
 
     $.ajax({
-      url: `${API_URL}/getDevs?floor=${floor}&type=${type}&room=${room}`,
+      url: `${API_URL}/remove?floor=${floor}&type=${type}&room=${room}`,
       type: 'GET',
       success: function(data) {
         console.log('Retrieved devices:', data);  
@@ -442,19 +452,19 @@ $('#dev_dev_r').on('change',function() {
 });
 
 
-//REMOVE 
-$('#remo_room').on('change',function() {
-  if ($('#remo_floor_now') != undefined && $('#remo_room') != undefined && ('#remo_dev_type') != undefined) {
-    const devices = $('#remove_dev');
+$('#remove_room').on('change',function() {
+  if ($('#remove_floor') != undefined && $('#remove_room') != undefined && ('#remove_device_type') != undefined) {
+    const devices = $('#remove_device');
+    console.log("yes, I am here");
     devices.empty();
     
-    const floor = $('#remo_floor_now').val();
-    const room = $('#remo_room').val();
-    const type = $('#remo_dev_type').val();
+    const floor = $('#remove_floor').val();
+    const room = $('#remove_room').val();
+    const type = $('#remove_device_type').val();
     console.log(floor, room, type);
 
     $.ajax({
-      url: `${API_URL}/getDevs?floor=${floor}&type=${type}&room=${room}`,
+      url: `${API_URL}/remove?floor=${floor}&type=${type}&room=${room}`,
       type: 'GET',
       success: function(data) {
         console.log('Retrieved devices:', data);  
@@ -476,20 +486,20 @@ $('#remo_room').on('change',function() {
 });
 
 
-$('#remove_d_btn').on('click', function () {
-  const type = $('#remo_dev_type').val();
-  const floor = $('#remo_floor_now').val();
-  const room = $('#remo_room').val();
-  const device = $('#remove_dev').val();
+$('#remove_device_button').on('click', function () {
+  const type = $('#remove_device_type').val();
+  const floor = $('#remove_floor').val();
+  const room = $('#remove_room').val();
+  const device = $('#remove_device').val();
 
   if (type && floor && room && device) {
     $.ajax({
-      url: `${API_URL}/remove_devices`,
+      url: `${API_URL}/remove`,
       type: 'DELETE',
       data: { type: type, floor: floor, room: room, device: device },
       success: function () {
-        console.log('Device getDevsd successfully');
-        $('#remo_floor_now').val("");
+        console.log('Device removed successfully');
+        $('#remove_floor').val("");
   
       },
       error: function (xhr, status, error) {
@@ -501,19 +511,19 @@ $('#remove_d_btn').on('click', function () {
   }
 });
 
-$('#dev_preference').on('click', function () {
-  const type1 = $('#ds_1_type').val();
-  const floor1 = $('#loor').val();
-  const room1 = $('#dev_1_r').val();
-  const device1 = $('#ds_1_d').val();
-  const type2 = $('#ds_2_t').val();
-  const floor2 = $('#ds_2_f').val();
-  const room2 = $('#ds_2_r').val();
-  const device2 = $('#ds_2_d').val();
-  const type3 = $('#ds_3_t').val();
-  const floor3 = $('#ds_3_f').val();
-  const room3 = $('#ds_3_r').val();
-  const device3 = $('#ds_3_d').val();
+$('#d_pref').on('click', function () {
+  const type1 = $('#d_1_type').val();
+  const floor1 = $('#d_1_floor').val();
+  const room1 = $('#d_1_room').val();
+  const device1 = $('#d_1_device').val();
+  const type2 = $('#d_2_type').val();
+  const floor2 = $('#d_2_floor').val();
+  const room2 = $('#d_2_room').val();
+  const device2 = $('#d_2_device').val();
+  const type3 = $('#d_3_type').val();
+  const floor3 = $('#d_3_floor').val();
+  const room3 = $('#d_3_room').val();
+  const device3 = $('#d_3_device').val();
 
   if (type1 && floor1 && room1 && device1 && type2 && floor2 && room2 && device2 && type3 && floor3 && room3 && device3) {
     $.ajax({
@@ -522,7 +532,7 @@ $('#dev_preference').on('click', function () {
       data: { d1:{type: type1, floor: floor1, room: room1, device: device1}, d2:{type: type2, floor: floor2, room: room2, device: device2}, d3:{type: type3, floor: floor3, room: room3, device: device3}},
       success: function () {
         console.log('Pref set, successfully');
-        // $('#remo_floor_now').val("");
+        // $('#remove_floor').val("");
   
       },
       error: function (xhr, status, error) {
@@ -535,7 +545,7 @@ $('#dev_preference').on('click', function () {
 });
 
 $(document).ready(function() {
-    const table = $('#lighting_devices_list');
+    const table = $('#lighting_table');
     console.log('yep')
     $.ajax({
       url: `${API_URL}/lighting`,
@@ -543,10 +553,10 @@ $(document).ready(function() {
       success: function(data) {
         data.forEach(function(lighting) {
           const row = $('<tr></tr>');
-          $('<td style="color: #ffffff;"></td>').text(lighting.name).appendTo(row);
-          $('<td style="color: #ffffff;"></td>').text(lighting.room).appendTo(row);
-          $('<td style="color: #ffffff;"></td>').text(lighting.floor).appendTo(row);
-          $('<td style="color: #ffffff;"></td>').text(lighting.status).appendTo(row);
+          $('<td></td>').text(lighting.name).appendTo(row);
+          $('<td></td>').text(lighting.room).appendTo(row);
+          $('<td></td>').text(lighting.floor).appendTo(row);
+          $('<td></td>').text(lighting.status).appendTo(row);
           table.append(row);
         });
       },
@@ -561,17 +571,18 @@ $(document).ready(function() {
   });
 
   $(document).ready(function() {
-    const table = $('#security_devices_list');
+    const table = $('#security_table');
+    console.log('yep')
     $.ajax({
       url: `${API_URL}/security`,
       method: 'GET',
       success: function(data) {
         data.forEach(function(lighting) {
           const row = $('<tr></tr>');
-          $('<td style="color: #ffffff;"></td>').text(lighting.name).appendTo(row);
-          $('<td style="color: #ffffff;"></td>').text(lighting.room).appendTo(row);
-          $('<td style="color: #ffffff;"></td>').text(lighting.floor).appendTo(row);
-          $('<td style="color: #ffffff;"></td>').text(lighting.status).appendTo(row);
+          $('<td></td>').text(lighting.name).appendTo(row);
+          $('<td></td>').text(lighting.room).appendTo(row);
+          $('<td></td>').text(lighting.floor).appendTo(row);
+          $('<td></td>').text(lighting.status).appendTo(row);
           table.append(row);
         });
       },
@@ -582,18 +593,18 @@ $(document).ready(function() {
   });
   
   $(document).ready(function() {
-    const table = $('#acondit_devices_list');
+    const table = $('#acond_table');
     console.log('yep')
     $.ajax({
-      url: `${API_URL}/ac`,
+      url: `${API_URL}/aircond`,
       method: 'GET',
       success: function(data) {
         data.forEach(function(lighting) {
           const row = $('<tr></tr>');
-          $('<td style="color: #ffffff;"></td>').text(lighting.name).appendTo(row);
-          $('<td style="color: #ffffff;"></td>').text(lighting.room).appendTo(row);
-          $('<td style="color: #ffffff;"></td>').text(lighting.floor).appendTo(row);
-          $('<td style="color: #ffffff;"></td>').text(lighting.status).appendTo(row);
+          $('<td></td>').text(lighting.name).appendTo(row);
+          $('<td></td>').text(lighting.room).appendTo(row);
+          $('<td></td>').text(lighting.floor).appendTo(row);
+          $('<td></td>').text(lighting.status).appendTo(row);
           table.append(row);
         });
       },
@@ -603,6 +614,11 @@ $(document).ready(function() {
     });
   });
 
+// 
+// 
+// 
+// 
+
 // mqtt stuff
 
 $('#send-command').on('click', function() {
@@ -611,8 +627,9 @@ $('#send-command').on('click', function() {
   $.post(MQTT_URL, { deviceId, command })
   .then(response => {
   location.href = '/';
-  })
+      })
+      });
 
-});
+
 
 

@@ -3,6 +3,7 @@ const helmet = require("helmet");
 const http = require('http'); // Use 'http' instead of 'https'
 
 var app = express();
+
 app.use(helmet({
   contentSecurityPolicy: {
     directives: {
@@ -30,6 +31,7 @@ app.use(function(req, res, next) {
 
 const port = 3000;
 const base = `${__dirname}/public`;
+
 app.use(express.static('public'));
 
 // Use 'http.createServer' instead of 'https.createServer'
@@ -41,28 +43,28 @@ app.get('/', function (req, res) {
   res.sendFile(`${base}/welcome.html`);
 });
 
-app.get('/a_d', function (req, res) {
-  res.sendFile(`${base}/a_d.html`);
+app.get('/add-device', function (req, res) {
+  res.sendFile(`${base}/add_d.html`);
 });
 
-app.get('/m_dev', function (req, res) {
-  res.sendFile(`${base}/m_dev.html`);
+app.get('/d_data', function (req, res) {
+  res.sendFile(`${base}/d_data.html`);
 });
 
-app.get('/light_Set', function (req, res) {
-  res.sendFile(`${base}/light_Set.html`);
+app.get('/pref', function (req, res) {
+  res.sendFile(`${base}/pref.html`);
 });
 
-app.get('/rem_Dev', function (req, res) {
-  res.sendFile(`${base}/rem_Dev.html`);
+app.get('/remove_d', function (req, res) {
+  res.sendFile(`${base}/remove_d.html`);
 });
 
 app.get('/lighting', function (req, res) {
   res.sendFile(`${base}/lighting.html`);
 });
 
-app.get('/ac', function (req, res) {
-  res.sendFile(`${base}/ac.html`);
+app.get('/acond', function (req, res) {
+  res.sendFile(`${base}/acond.html`);
 });
 
 app.get('/security', function (req, res) {
