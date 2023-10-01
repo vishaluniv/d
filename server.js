@@ -63,10 +63,3 @@ app.get('/lighting', function (req, res) {
   res.sendFile(`${base}/lighting.html`);
 });
 
-app.get('/acond', function (req, res) {
-  res.sendFile(`${base}/acond.html`);
-});
-
-app.get('/security', function (req, res) {
-  res.sendFile(`${base}/security.html`);
-});
